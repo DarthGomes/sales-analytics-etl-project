@@ -1,0 +1,22 @@
+services:
+  spark:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: spark-delta-project
+    volumes:
+      - ./data:/app/data
+      - ./src:/app/src
+    ports:
+      - "8888:8888"
+      - "4040:4040"
+    environment:
+      - SPARK_MODE=master
+    command: >
+      jupyter lab
+      --ip=0.0.0.0
+      --port=8888
+      --no-browser
+      --allow-root
+      --NotebookApp.token=''
+      --NotebookApp.password=''
