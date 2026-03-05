@@ -1,0 +1,7 @@
+delta-spark==3.0.0
+pandas
+pyarrow
+matplotlib
+seaborn
+plotly
+jupyterlab
