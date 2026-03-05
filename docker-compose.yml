@@ -5,7 +5,7 @@ services:
       dockerfile: docker/Dockerfile
     container_name: spark-delta-project
     volumes:
-      - .:/app   # 👈 monte tudo
+      - .:/app
     working_dir: /app
     ports:
       - "8888:8888"
