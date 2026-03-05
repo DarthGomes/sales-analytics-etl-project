@@ -5,13 +5,14 @@ services:
       dockerfile: docker/Dockerfile
     container_name: spark-delta-project
     volumes:
-      - ./data:/app/data
-      - ./src:/app/src
+      - .:/app
+    working_dir: /app
     ports:
       - "8888:8888"
       - "4040:4040"
     environment:
       - SPARK_MODE=master
+      - PYTHONPATH=/app
     command: >
       jupyter lab
       --ip=0.0.0.0

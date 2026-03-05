@@ -1,7 +1,14 @@
 from spark_session import get_spark
 from utils.logger import get_logger
+from utils.schema_manager import create_schemas
 
+spark = get_spark()
 logger = get_logger(__name__)
+
+schemas_list = ["raw", "store", "publish"]
+
+create_schemas(spark, schemas_list)
+
 
 def run_ingestion():
 
@@ -24,7 +31,7 @@ def run_ingestion():
             .format("delta") \
             .mode("overwrite") \
             .option("path", "/app/data/lake/raw/raw_product") \
-            .saveAsTable("raw_product")
+            .saveAsTable("raw.raw_product")
 
         logger.info("raw_product table created successfully.")
 
@@ -42,7 +49,7 @@ def run_ingestion():
             .format("delta") \
             .mode("overwrite") \
             .option("path", "/app/data/lake/raw/raw_sales_order_header") \
-            .saveAsTable("raw_sales_order_header")
+            .saveAsTable("raw.raw_sales_order_header")
 
         logger.info("raw_sales_order_header table created successfully.")
 
@@ -60,7 +67,7 @@ def run_ingestion():
             .format("delta") \
             .mode("overwrite") \
             .option("path", "/app/data/lake/raw/raw_sales_order_detail") \
-            .saveAsTable("raw_sales_order_detail")
+            .saveAsTable("raw.raw_sales_order_detail")
 
         logger.info("raw_sales_order_detail table created successfully.")
 
