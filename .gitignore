@@ -50,8 +50,8 @@ MANIFEST
 *.manifest
 *.spec
 
-*/.Trash-0/*
-.Trash-0
+.Trash-0/
+.Trash*
 
 # Installer logs
 pip-log.txt
