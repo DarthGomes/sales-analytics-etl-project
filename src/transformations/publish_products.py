@@ -8,8 +8,6 @@ from src.utils.table_writer import save_table
 spark = get_spark()
 logger = get_logger(__name__)
 
-products_df = spark.table("store.store_products")
-
 
 def create_publish_products(df: DataFrame) -> DataFrame:
 
@@ -68,14 +66,18 @@ def create_publish_products(df: DataFrame) -> DataFrame:
     return publish_products
 
 
-df_publish_products = products_df.transform(create_publish_products)
+def run_publish_products():
 
-logger.info("Saving publish_products table")
+    logger.info("Starting publish_products transformation")
 
-save_table(
-    df=df_publish_products,
-    schema="publish",
-    table_name="publish_products"
-)
+    products_df = spark.table("store.store_products")
 
-logger.info("publish_products saved successfully")
+    df_publish_products = products_df.transform(create_publish_products)
+
+    save_table(
+        df=df_publish_products,
+        schema="publish",
+        table_name="publish_products"
+    )
+
+    logger.info("publish_products saved successfully")

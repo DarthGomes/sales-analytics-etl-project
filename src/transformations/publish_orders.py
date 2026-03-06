@@ -60,17 +60,21 @@ def build_publish_orders(
 
     return df
 
+def run_publish_orders():
 
+    logger.info("Starting publish_orders transformation")
 
-detail_df = spark.table("store.store_sales_order_detail").drop('loaded_at')
-header_df = spark.table("store.store_sales_order_header").drop('loaded_at')
+    detail_df = spark.table("store.store_sales_order_detail").drop("loaded_at")
+    header_df = spark.table("store.store_sales_order_header").drop("loaded_at")
 
-publish_orders_df = build_publish_orders(detail_df, header_df)
+    publish_orders_df = build_publish_orders(detail_df, header_df)
 
+    save_table(
+        publish_orders_df,
+        schema="publish",
+        table_name="publish_orders"
+    )
 
-save_table(
-    publish_orders_df,
-    schema="publish",
-    table_name="publish_orders")
+    logger.info("publish_orders saved successfully")
 
   

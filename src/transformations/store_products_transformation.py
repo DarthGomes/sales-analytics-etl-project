@@ -6,9 +6,8 @@ from src.spark_session import get_spark
 from src.utils.logger import get_logger
 from src.utils.table_writer import save_table
 
-spark = get_spark()
 logger = get_logger(__name__)
-df_products = spark.table('raw_product')
+
 
 def build_store_product(df: DataFrame) -> DataFrame:
 
@@ -43,11 +42,21 @@ def build_store_product(df: DataFrame) -> DataFrame:
 
     return df_casted
 
-df_products_cleaned = df_products.transform(build_store_product)
 
+def run_store_products():
 
-save_table(
-    df=df_products_cleaned,
-    schema="store",
-    table_name="store_products"
-)
+    spark = get_spark()
+
+    logger.info("Starting store_products transformation")
+
+    df_products = spark.table("raw.raw_product")
+
+    df_products_cleaned = df_products.transform(build_store_product)
+
+    save_table(
+        df=df_products_cleaned,
+        schema="store",
+        table_name="store_products"
+    )
+
+    logger.info("store_products saved successfully")

@@ -9,21 +9,21 @@ from src.utils.table_writer import save_table
 spark = get_spark()
 logger = get_logger(__name__)
 
-df_sales_order_header = spark.table('raw_sales_order_header')
+def run_store_sales_order_header():
 
-def build_store_sales_order_header(df_sales_order_header: DataFrame) -> DataFrame:
+    logger.info("Starting store_sales_order_header transformation")
 
-    df_casted = (
-        df_sales_order_header
-        .withColumn("Freight", F.col("Freight").cast(DecimalType(18,2)))
+    df = spark.table("raw.raw_sales_order_header")
+
+    df_cleaned = df.withColumn(
+        "Freight",
+        F.col("Freight").cast(DecimalType(18,2))
     )
 
-    return df_casted
+    save_table(
+        df_cleaned,
+        schema="store",
+        table_name="store_sales_order_header"
+    )
 
-df_sales_order_header_cleaned = df_sales_order_header.transform(build_store_sales_order_header)
-
-save_table(
-    df_sales_order_header_cleaned,
-    schema="store",
-    table_name="store_sales_order_header"
-)
+    logger.info("store_sales_order_header saved successfully")
