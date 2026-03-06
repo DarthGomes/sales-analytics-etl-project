@@ -1,0 +1,72 @@
+Bom, progredimos. Atualmente no lake, estamos no seguinte cenário:
+
+store.store_products
+ |-- ProductID: integer (nullable = true)
+ |-- ProductDesc: string (nullable = true)
+ |-- ProductNumber: string (nullable = true)
+ |-- MakeFlag: boolean (nullable = true)
+ |-- Color: string (nullable = true)
+ |-- SafetyStockLevel: integer (nullable = true)
+ |-- ReorderPoint: integer (nullable = true)
+ |-- Size: string (nullable = true)
+ |-- SizeUnitMeasureCode: string (nullable = true)
+ |-- WeightUnitMeasureCode: string (nullable = true)
+ |-- StandardCost: decimal(18,2) (nullable = true)
+ |-- ListPrice: decimal(18,2) (nullable = true)
+ |-- Weight: decimal(18,2) (nullable = true)
+ |-- ProductCategoryName: string (nullable = true)
+ |-- ProductSubCategoryName: string (nullable = true)
+ |-- loaded_at: timestamp (nullable = true)
+
+**********
+store.store_sales_order_detail
+ |-- SalesOrderID: integer (nullable = true)
+ |-- SalesOrderDetailID: integer (nullable = true)
+ |-- OrderQty: integer (nullable = true)
+ |-- ProductID: integer (nullable = true)
+ |-- UnitPrice: decimal(18,2) (nullable = true)
+ |-- UnitPriceDiscount: decimal(5,4) (nullable = true)
+ |-- loaded_at: timestamp (nullable = true)
+
+**********
+store.store_sales_order_header
+ |-- SalesOrderID: integer (nullable = true)
+ |-- OrderDate: timestamp (nullable = true)
+ |-- ShipDate: date (nullable = true)
+ |-- OnlineOrderFlag: boolean (nullable = true)
+ |-- AccountNumber: string (nullable = true)
+ |-- CustomerID: integer (nullable = true)
+ |-- SalesPersonID: integer (nullable = true)
+ |-- Freight: decimal(18,2) (nullable = true)
+ |-- loaded_at: timestamp (nullable = true)
+
+**********
+
+Agora, é hora de criarmos os seguintes para atender a seguinte parte do desafio:
+
+3. Product Master Transformations
+Perform the following transformations on the product master data and write the results into a table named publish_product:
+
+Replace NULL values in the Color field with N/A.
+
+Enhance the ProductCategoryName field when it is NULL using the following logic:
+
+If ProductSubCategoryName is in (‘Gloves’, ‘Shorts’, ‘Socks’, ‘Tights’, ‘Vests’), set ProductCategoryName to ‘Clothing’.
+
+If ProductSubCategoryName is in (‘Locks’, ‘Lights’, ‘Headsets’, ‘Helmets’, ‘Pedals’, ‘Pumps’), set ProductCategoryName to ‘Accessories’.
+
+If ProductSubCategoryName contains the word ‘Frames’ or is in (‘Wheels’, ‘Saddles’), set ProductCategoryName to ‘Components’.
+
+4. Sales Order Transformations
+Join SalesOrderDetail with SalesOrderHeader on SalesOrderId and apply the following transformations:
+
+Calculate LeadTimeInBusinessDays as the difference between OrderDate and ShipDate, excluding Saturdays and Sundays.
+
+Calculate TotalLineExtendedPrice using the formula:
+OrderQty * (UnitPrice - UnitPriceDiscount)
+
+Write the results into a table named publish_orders, including:
+
+All fields from SalesOrderDetail.
+
+All fields from SalesOrderHeader except SalesOrderId, and rename Freight to TotalOrderFreight.
