@@ -9,20 +9,25 @@ spark = get_spark()
 logger = get_logger(__name__)
 
 
-def create_publish_products(df: DataFrame) -> DataFrame:
+def create_publish_products_propose(df: DataFrame) -> DataFrame:
 
-    logger.info("Starting publish_products transformation")
+    logger.info("Starting publish_products_propose transformation")
 
     clothing = [
-        "Gloves", "Shorts", "Socks", "Tights", "Vests"
+        "Gloves", "Shorts", "Socks", "Tights", "Vests",
+        "Caps", "Bib-Shorts"
     ]
 
     accessories = [
-        "Locks", "Lights", "Headsets", "Helmets", "Pedals", "Pumps"
+        "Locks", "Lights", "Headsets", "Helmets", "Pedals", "Pumps",
+        "Hydration Packs", "Bottles and Cages", "Panniers",
+        "Bike Racks", "Fenders", "Bike Stands", "Cleaners"
     ]
 
     components = [
-        "Wheels", "Saddles"
+        "Wheels", "Saddles",
+        "Bottom Brackets", "Derailleurs", "Chains",
+        "Forks", "Brakes", "Cranksets", "Tires and Tubes"
     ]
 
     publish_products = (
@@ -56,23 +61,23 @@ def create_publish_products(df: DataFrame) -> DataFrame:
         )
     )
 
-    logger.info("publish_products transformation finished")
+    logger.info("publish_products_propose transformation finished")
 
     return publish_products
 
 
-def run_publish_products():
+def run_publish_products_propose():
 
     logger.info("Starting publish_products transformation")
 
     products_df = spark.table("store.store_products")
 
-    df_publish_products = products_df.transform(create_publish_products)
+    df_publish_products = products_df.transform(create_publish_products_propose)
 
     save_table(
         df=df_publish_products,
         schema="publish",
-        table_name="publish_products"
+        table_name="publish_products_propose"
     )
 
-    logger.info("publish_products saved successfully")
+    logger.info("publish_products_propose saved successfully")
