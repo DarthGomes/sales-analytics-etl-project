@@ -7,6 +7,7 @@ from src.transformations.store_sales_order_detail import run_store_sales_order_d
 from src.transformations.store_sales_order_header import run_store_sales_order_header
 
 from src.transformations.publish_products import run_publish_products
+from src.transformations.publish_products_propose import run_publish_products_propose
 from src.transformations.publish_orders import run_publish_orders
 
 logger = get_logger(__name__)
@@ -29,6 +30,7 @@ def main():
         # PUBLISH
         run_publish_products()
         run_publish_orders()
+        run_publish_products_propose()
 
         logger.info("Pipeline finished successfully")
 
